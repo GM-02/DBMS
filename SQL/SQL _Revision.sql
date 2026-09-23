@@ -28,14 +28,83 @@ SELECT NAME,SALARY FROM employees;
 
 UPDATE employees SET SALARY=100000 where id=100
 
-DELETE FROM employees where id=110
+DELETE FROM employees
+ where id=110
 
-SELECT *FROM employees WHERE DEPARTMENT='IT' AND SALARY>70000
+SELECT *FROM employees
+ WHERE DEPARTMENT='IT' AND SALARY>70000
 
-SELECT * FROM employees WHERE DEPARTMENT IN('IT','HR')
+SELECT * FROM employees
+ WHERE DEPARTMENT IN('IT','HR')
 
-SELECT *FROM employees WHERE NAME LIKE 'A%'
+SELECT *FROM employees
+ WHERE NAME LIKE 'A%'
 
-SELECT * FROM employees ORDER BY SALARY DESC;
+SELECT * FROM employees 
+ORDER BY SALARY DESC;
 
-SELECT * FROM employees ORDER BY SALARY ASC LIMIT 5;
+SELECT * FROM employees
+ ORDER BY SALARY ASC LIMIT 5;
+
+SELECT COUNT(*) FROM employees;
+ 
+ SELECT AVG(SALARY) FROM employees;
+ 
+ SELECT MAX(SALARY) FROM employees;
+ 
+ SELECT DEPARTMENT,COUNT(*)
+ FROM employees 
+ GROUP BY DEPARTMENT
+ 
+ SELECT DEPARTMENT, AVG(SALARY)
+ FROM employees
+ GROUP BY DEPARTMENT
+ HAVING AVG(SALARY)>80000;
+ 
+ /* 
+STARTING JOIN FROM HERE 
+*/
+ 
+CREATE TABLE PROJECTS (
+    PROJECT_ID INT PRIMARY KEY,
+    PROJECT_NAME VARCHAR(50) NOT NULL,
+    BUDGET INT,
+    EMP_ID INT, -- Connects to EMPLOYEES.ID
+    STATUS VARCHAR(20) DEFAULT 'Not Started', -- Tracks progress (e.g., 'Active', 'Completed')
+    START_DATE DATE,                          -- Practice with date filtering
+    END_DATE DATE,                            -- Practice calculating durations
+    CLIENT_NAME VARCHAR(50)                   -- Practice text filtering (LIKE)
+);
+INSERT INTO PROJECTS (PROJECT_ID, PROJECT_NAME, BUDGET, EMP_ID, STATUS, START_DATE, END_DATE, CLIENT_NAME) VALUES
+(101, 'Website Redesign', 15000, 100, 'Active', '2026-01-15', '2026-06-30', 'Acme Corp'),
+(102, 'HR Automation', 5000, 108, 'Completed', '2025-09-01', '2025-12-15', 'Internal'),
+(103, 'Mobile App', 40000, 107, 'Active', '2026-03-01', '2026-11-30', 'Global Tech'),
+(104, 'Data Security', 25000, 106, 'On Hold', '2026-05-01', NULL, 'SafeData Inc'),
+(105, 'Office Renovation', 109, NULL, 'Not Started', NULL, NULL, 'Internal');
+
+ select * FROM PROJECTS
+
+SELECT E.NAME, P.PROJECT_NAME  
+FROM EMPLOYEES E
+INNER JOIN PROJECTS P
+ON E.ID = P.EMP_ID;
+
+SELECT E.NAME, P.BUDGET
+FROM EMPLOYEES E
+LEFT JOIN PROJECTS P
+ON E.ID = P.EMP_ID;
+
+SELECT E.NAME 
+FROM EMPLOYEES E 
+LEFT JOIN  PROJECTS P 
+ON E.ID = P.EMP_ID
+WHERE P.EMP_ID IS NULL;
+
+SELECT E.NAME 
+FROM EMPLOYEES E 
+RIGHT JOIN  PROJECTS P 
+ON E.ID = P.EMP_ID
+WHERE P.EMP_ID IS NULL;
+
+
+
