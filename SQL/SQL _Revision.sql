@@ -106,5 +106,11 @@ RIGHT JOIN  PROJECTS P
 ON E.ID = P.EMP_ID
 WHERE P.EMP_ID IS NULL;
 
+SELECT NAME, SALARY
+FROM employees
+WHERE SALARY > (
+    SELECT AVG(salary)
+    FROM employees
+);
 
 
