@@ -113,4 +113,49 @@ WHERE SALARY > (
     FROM employees
 );
 
+SELECT name, salary,
+CASE
+    WHEN salary >= 100000 THEN 'High'
+    WHEN salary >= 60000 THEN 'Medium'
+    ELSE 'Low'
+END AS salary_level
+FROM employees;
 
+
+WITH high_salary AS (
+    SELECT *
+    FROM employees
+    WHERE salary > 80000
+)
+SELECT *
+FROM high_salary;
+
+
+SELECT name, salary,
+       RANK() OVER (ORDER BY salary DESC) AS salary_rank
+FROM employees;
+
+
+
+
+--INDEX
+CREATE INDEX idx_employee_name
+ON employees(name);
+
+
+
+
+
+
+--TRANSACTION
+START TRANSACTION;
+
+UPDATE accounts
+SET balance = balance - 100
+WHERE id = 1;
+
+UPDATE accounts
+SET balance = balance + 100
+WHERE id = 2;
+
+COMMIT;
