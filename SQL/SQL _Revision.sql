@@ -159,3 +159,16 @@ SET balance = balance + 100
 WHERE id = 2;
 
 COMMIT;
+
+
+
+
+
+--View
+
+CREATE VIEW employee_summary AS
+SELECT name, department, salary
+FROM employees;
+
+SELECT *
+FROM employee_summary;
