@@ -148,3 +148,56 @@ VALUES
 (22, 112, 8, 2, 4500.00),
 (23, 112, 15, 2, 18000.00);
 
+
+
+
+-- Basic
+SELECT * FROM orders;
+SELECT * FROM order_items;
+SELECT * FROM customers; -- 1
+SELECT * FROM customers where city= 'karachi'; -- 2
+SELECT * FROM products WHERE  price>10000; -- 3
+SELECT * FROM products ORDER BY price ASC; -- 4
+SELECT * FROM products ORDER BY price DESC limit 5; -- 5
+ 
+-- INTERMEDIATE (QUERIES)
+SELECT COUNT(*) FROM customers; -- 1
+SELECT AVG(price) FROM products; -- 2
+SELECT SUM(subtotal) FROM order_items; -- 3
+SELECT customer_id, count(order_id) as order_count from orders group by customer_id; -- 4
+SELECT * FROM customers WHERE customer_id NOT IN (SELECT customer_id FROM orders); -- 5
+
+-- JOINS
+SELECT c.name , O.total_amount from customers c RIGHT JOIN orders o on c.customer_id= o.customer_id; -- 1
+SELECT o.* , p.* from orders o LEFT JOIN products p on p.product_id= o.product_id; -- 2
+SELECT 
+    o.order_id,
+    o.order_date,
+    o.status,
+    p.product_name,
+    oi.quantity,
+    oi.unit_price,
+    oi.subtotal
+FROM orders o
+JOIN order_items oi 
+    ON o.order_id = oi.order_id
+JOIN products p 
+    ON oi.product_id = p.product_id;
+
+SELECT 
+    customer_id,
+    SUM(total_amount) AS total_spending
+FROM orders
+GROUP BY customer_id;  -- 4
+
+
+SELECT 
+    p.product_id,
+    p.product_name,
+    SUM(oi.quantity) AS total_quantity
+FROM products p
+JOIN order_items oi
+    ON p.product_id = oi.product_id
+GROUP BY p.product_id, p.product_name
+ORDER BY total_quantity DESC
+LIMIT 1;
