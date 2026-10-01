@@ -201,3 +201,27 @@ JOIN order_items oi
 GROUP BY p.product_id, p.product_name
 ORDER BY total_quantity DESC
 LIMIT 1;
+
+
+
+SELECT 
+    customer_id,
+    SUM(total_amount) AS total_spending
+FROM orders
+GROUP BY customer_id
+HAVING SUM(total_amount) > 200000;
+
+
+
+-- Advance 
+SELECT customer_id, SUM(total_amount) AS total_spending
+FROM orders
+GROUP BY customer_id
+HAVING SUM(total_amount) > (
+    SELECT AVG(customer_total)
+    FROM (
+        SELECT customer_id, SUM(total_amount) AS customer_total
+        FROM orders
+        GROUP BY customer_id
+    ) AS t
+);
